@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NEW PERSON FORM</title>
+</head>
+<body>
+    <form th:method="POST" action="/library/people" th:object="${person}">
+        <label for="name">NAME</label>
+        <input type="text" th:field="*{name}" id="name">
+        <br>
+        <label for="dateOfBirth">BIRTH DATE</label>
+        <input type="text" th:field="*{dateOfBirth}" id="dateOfBirth">
+        <br>
+        <hr>
+        <input type="submit" value="Add New Person">
+    </form>
+</body>
+</html>
