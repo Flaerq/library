@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${person.getName()}">text</title>
+</head>
+<body>
+
+<p th:text="${person.getName()}">
+<br>
+<p th:text="${person.getDateOfBirth()}">
+<br>
+<hr>
+<form th:action="@{/library/people/{id}/edit(id=${person.getId()})}">
+    <button type="submit">Edit Person</button>
+</form>
+<form th:method="DELETE" th:action="@{/library/people/{id}(id=${person.getId()})}">
+    <button type="submit">Delete Person</button>
+</form>
+<form action="/library/people">
+    <button type="submit">To People List</button>
+</form>
+
+
+</body>
+</html>

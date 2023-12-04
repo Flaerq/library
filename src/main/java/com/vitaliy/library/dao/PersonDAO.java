@@ -42,6 +42,7 @@ public class PersonDAO {
 
     public void delete(int id){
         template.update("DELETE FROM person WHERE id=?",id);
+
     }
 
 }
