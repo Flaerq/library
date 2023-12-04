@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PEOPLE</title>
+</head>
+<body>
+<div th:each="person : ${people}">
+    <a th:href="@{/library/people/{id}(id=${person.getId()})}" th:text="${person.getName() + ', ' + person.getDateOfBirth()}">person</a>
+    <br>
+</div>
+<br>
+<hr>
+<br>
+<form action="/library/people/new" method="GET">
+    <button type="submit">Add Person</button>
+</form>
+</body>
+</html>
