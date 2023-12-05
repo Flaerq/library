@@ -7,9 +7,14 @@
 <body>
 
 <p th:text="${ 'Name: ' + person.getName()}">
-<br>
+    <br>
 <p th:text="${'Date of birth: ' + person.getDateOfBirth()}">
-<br>
+    <br>
+<hr>
+<h3>Books:</h3>
+<div th:each="book : ${books}">
+    <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getReleaseDate().getYear()}">
+</div>
 <hr>
 <form th:action="@{/library/people/{id}/edit(id=${person.getId()})}">
     <button type="submit">Edit Person</button>

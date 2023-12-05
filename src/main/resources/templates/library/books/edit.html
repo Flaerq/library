@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.getTitle()}">text</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/library/books/{id}(id=${book.getId()})}" th:object="${book}">
+  <label for="title">Enter title:</label>
+  <input type="text" th:field="*{title}" id="title">
+  <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title</div>
+  <br>
+  <label for="author">Enter author:</label>
+  <input type="text" th:field="*{author}" id="author">
+  <br>
+  <label for="releaseDate">Enter release date:</label>
+  <input type="text" th:field="*{releaseDate}" id="releaseDate">
+  <br>
+  <hr>
+  <input type="submit" value="Edit Book">
+</form>
+<form method="GET" action="/library/books">
+  <button type="submit">To Books List</button>
+</form>
+
+</body>
+</html>

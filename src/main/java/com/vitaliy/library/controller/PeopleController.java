@@ -1,19 +1,32 @@
 package com.vitaliy.library.controller;
 
+import com.vitaliy.library.dao.OwnerRelationDAO;
 import com.vitaliy.library.dao.PersonDAO;
+import com.vitaliy.library.model.Book;
 import com.vitaliy.library.model.Person;
+import com.vitaliy.library.utils.PersonNameValidator;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/library/people")
 public class PeopleController {
 
+    private PersonNameValidator personNameValidator;
     private PersonDAO personDAO;
+    private OwnerRelationDAO ownerRelationDAO;
 
-    public PeopleController(PersonDAO personDAO){
+    public PeopleController(PersonNameValidator personNameValidator,
+                            PersonDAO personDAO,
+                            OwnerRelationDAO ownerRelationDAO){
+        this.personNameValidator = personNameValidator;
         this.personDAO = personDAO;
+        this.ownerRelationDAO = ownerRelationDAO;
     }
 
 
@@ -29,7 +42,12 @@ public class PeopleController {
     }
 
     @PostMapping()
-    public String postNewPerson(@ModelAttribute("person") Person person){
+    public String postNewPerson(@ModelAttribute("person") @Valid Person person,
+                                BindingResult bindingResult){
+        personNameValidator.validate(person,bindingResult);
+        if (bindingResult.hasErrors()){
+            return "library/people/new";
+        }
         personDAO.save(person);
         return "redirect:/library/people";
     }
@@ -38,6 +56,12 @@ public class PeopleController {
     public String show(@PathVariable("id") int id,
                        Model model){
         model.addAttribute("person",personDAO.readById(id).orElse(null));
+        List<Book> personBooks = ownerRelationDAO.read(id);
+        if (!personBooks.isEmpty()){
+            model.addAttribute("books",personBooks);
+            return "library/people/showWithBooks";
+        }
+
         return "library/people/show";
     }
 
@@ -50,7 +74,12 @@ public class PeopleController {
 
     @PatchMapping("/{id}")
     public String patchEdit(@PathVariable("id") int id,
-                            @ModelAttribute("person") Person person){
+                            @ModelAttribute("person") @Valid Person person,
+                            BindingResult bindingResult){
+        personNameValidator.validate(person,bindingResult);
+        if (bindingResult.hasErrors()){
+            return "library/people/edit";
+        }
         personDAO.update(id,person);
         return "redirect:/library/people/{id}";
     }
