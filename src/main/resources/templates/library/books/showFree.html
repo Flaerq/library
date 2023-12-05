@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${book.getTitle()}">book title</title>
+</head>
+<body>
+<p th:text="${'Title: ' + book.getTitle()}">
+<p th:text="${'Author: ' + book.getAuthor()}">
+<p th:text="${'Release date: ' + book.getReleaseDate()}">
+<br>
+<hr>
+<p>This book is free. Whom you want to give it ?</p>
+<form th:method="POST" action="/library/books"  >
+    <input type="hidden" name="formType" value="select">
+    <input type="hidden" name="bookId" th:value="${book.getId()}">
+    <label for="optionalSelect">Choose person: </label>
+    <select th:object="${person}" th:field="*{id}" id="optionalSelect">
+        <option th:each="person : ${people}"
+                th:value="${person.getId()}"
+                th:text="${person.getName()}">Option 1</option>
+
+    </select>
+    <button type="submit" >Give book</button>
+</form>
+
+
+<hr>
+<form th:action="@{/library/books/{id}/edit(id=${book.getId()})}">
+    <button type="submit">Edit Book</button>
+</form>
+<form action="/library/books">
+    <button type="submit">To Book List</button>
+</form>
+</body>
+</html>

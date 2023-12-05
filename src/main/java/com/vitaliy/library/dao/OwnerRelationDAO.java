@@ -1,11 +1,14 @@
 package com.vitaliy.library.dao;
 
 import com.vitaliy.library.dao.mappers.RelationBookRowMapper;
+import com.vitaliy.library.dao.mappers.RelationPersonRowMapper;
 import com.vitaliy.library.model.Book;
+import com.vitaliy.library.model.Person;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OwnerRelationDAO {
@@ -20,6 +23,21 @@ public class OwnerRelationDAO {
         return template.query("SELECT person_id, book.title,book.author, book.release_date FROM relation JOIN book ON book.id = relation.book_id WHERE person_id=?",
                 new Object[]{personID},
                 new RelationBookRowMapper());
+    }
+
+    public Optional<Book> readByBookId(int bookID){
+        return template.query("SELECT book_id, book.title,book.author, book.release_date FROM relation JOIN book ON book.id = relation.book_id WHERE book_id=?",
+                new Object[]{bookID},
+                new RelationBookRowMapper())
+                .stream()
+                .findAny();
+    }
+
+    public Optional<Person> readPersonByBookId(int bookID){
+        return template.query("SELECT book_id, person.id, person.name, person.date_of_birth FROM relation JOIN person ON person.id = relation.person_id WHERE book_id = ?",
+                new Object[]{bookID},new RelationPersonRowMapper())
+                .stream()
+                .findAny();
     }
 
     public void save(int personID, int bookID){

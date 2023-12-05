@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title th:text="${book.getTitle()}">book title</title>
+  <meta charset="UTF-8">
+  <title th:text="${book.getTitle()}">book title</title>
 </head>
 <body>
 <p th:text="${'Title: ' + book.getTitle()}">
 <p th:text="${'Author: ' + book.getAuthor()}">
 <p th:text="${'Release date: ' + book.getReleaseDate()}">
+  <br>
+  <hr>
+  <p th:text="${'This book taken by: ' + personBook.getName()}">
 <br>
 <hr>
 <form th:action="@{/library/books/{id}/edit(id=${book.getId()})}">
-    <button type="submit">Edit Book</button>
+  <button type="submit">Edit Book</button>
 </form>
 <form action="/library/books">
-    <button type="submit">To Book List</button>
+  <button type="submit">To Book List</button>
 </form>
 </body>
 </html>
